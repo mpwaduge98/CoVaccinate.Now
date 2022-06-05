@@ -1,0 +1,49 @@
+﻿@model CoVaccinate.now.Models.Vaccine
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1 class="py-3 main__heading">Edit</h1>
+
+<h4 class="subheading">Vaccine</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="VaccineID" />
+            <div class="form-group">
+                <label asp-for="AgeGroupId" class="control-label"></label>
+                <select asp-for="AgeGroupId" class="form-control" asp-items="ViewBag.AgeGroupId"></select>
+                <span asp-validation-for="AgeGroupId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VaccineName" class="control-label"></label>
+                <input asp-for="VaccineName" class="form-control" />
+                <span asp-validation-for="VaccineName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="VaccineDoseId" class="control-label"></label>
+                <select asp-for="VaccineDoseId" class="form-control" asp-items="ViewBag.VaccineDoseId"></select>
+                <span asp-validation-for="VaccineDoseId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpecialNote" class="control-label"></label>
+                <input asp-for="SpecialNote" class="form-control" />
+                <span asp-validation-for="SpecialNote" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

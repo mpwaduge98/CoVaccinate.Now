@@ -1,0 +1,122 @@
+﻿@model CoVaccinate.now.Models.VaccineCentre
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1 class="main__heading">Create</h1>
+
+<h4 class="subheading">VaccineCentre</h4>
+<hr />
+
+<head>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4W6u06pOAPOGKeo40ZhmlWEqzxQF3Xyo&callback=initMap&libraries=places&v=weekly"defer></script>
+</head>
+<div class="row">
+
+    <div class="col">
+        <div class="col-8">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="VaccineCentreName" class="control-label"></label>
+                    <input asp-for="VaccineCentreName" class="form-control" />
+                    <span asp-validation-for="VaccineCentreName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address"  id="input" class="form-control" />
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ZIPCode" class="control-label"></label>
+                    <input asp-for="ZIPCode" class="form-control" />
+                    <span asp-validation-for="ZIPCode" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Email" class="control-label"></label>
+                    <input asp-for="Email" class="form-control" />
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNo" class="control-label"></label>
+                    <input asp-for="PhoneNo" class="form-control" />
+                    <span asp-validation-for="PhoneNo" class="text-danger"></span>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label asp-for="longitude" class="control-label"></label>
+                            <input asp-for="longitude" name="longitude" id="longitude" class="form-control" />
+                            <span asp-validation-for="longitude" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label asp-for="latitude" class="control-label"></label>
+                            <input asp-for="latitude" id="latitude" name="latitude" class="form-control" />
+                            <span asp-validation-for="latitude" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col">
+      
+        <div id="map" style="width:100%;height:100%;" class="my-3"></div>
+
+        <script type="text/javascript">
+            function initMap() {
+
+                var location = {
+                    lat: 6.900631189293336,
+                    lng: 79.87619383057549
+                }
+
+                const map = new google.maps.Map(document.getElementById("map"), {
+                    mapTypeControl: false,
+                    center: { lat: 6.900631189293336, lng: 79.87619383057549 },
+                    zoom: 16,
+                });
+
+                autocomplete = new google.maps.places.Autocomplete(document.getElementById("input"),
+                    {
+                        componentRestrictions: { "country": ["lk"] },
+                        fields: ['place_id', 'geometry', 'name'],
+                        types: ['hospital']
+
+                    });
+                
+                autocomplete.addListener("place_changed", () => {
+                    const place = autocomplete.getPlace();
+                    document.getElementById("longitude").value = place.geometry.location.lng();
+                    document.getElementById("latitude").value = place.geometry.location.lat();
+                   
+                    new google.maps.Marker({
+                        position: place.geometry.location,
+                        title: place.name,
+                        map: map
+                    })
+                });
+
+            } 
+
+            window.initMap = initMap;
+
+        </script>
+
+    </div>
+
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
